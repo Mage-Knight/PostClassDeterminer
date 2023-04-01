@@ -1,0 +1,36 @@
+className: T1, directParents: P2
+className: T0, directParents: P2
+className: M, directParents: P2
+className: S, directParents: P2
+className: L, directParents: P2
+className: T01, directParents: T0, T1
+className: M1, directParents: M, T1
+className: M0, directParents: M, T0
+className: M01, directParents: M0, M1, T01
+className: a_2, directParents: T1
+className: Ma_2, directParents: a_2, M1
+className: a0_2, directParents: a_2, T01
+className: Ma0_2, directParents: a0_2, Ma_2, M01
+className: A_2, directParents: T0
+className: MA_2, directParents: A_2, M0
+className: A1_2, directParents: A_2, T01
+className: MA1_2, directParents: A1_2, MA_2, M01
+className: S01, directParents: T01, S
+className: SM, directParents: S01, Ma0_2, MA1_2
+className: LS, directParents: L, S
+className: L0, directParents: L, T0
+className: L1, directParents: L, T1
+className: L01, directParents: L0, L1, LS, S01
+className: P, directParents: M
+className: P1, directParents: P, M1
+className: P_d, directParents: M
+className: P1_d, directParents: P_d, M0
+className: O, directParents: L
+className: OM, directParents: O, P, P_d
+className: OS, directParents: O, LS
+className: O0, directParents: P1_d, P0, L0, OM
+className: O1, directParents: P0_d, P1, L1, OM
+className: O01, directParents: O0, O1, OS, P01, P01_d, L01, SM
+className: E, directParents: OM
+className: E0, directParents: O0, E
+className: E1, directParents: O1, E
