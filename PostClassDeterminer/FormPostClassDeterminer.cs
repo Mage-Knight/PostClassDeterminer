@@ -31,7 +31,7 @@ namespace PostClassDeterminer
 
             if (FuncLib.IsPowerOfTwo(TxtInput.Text.Length) && isZerosOnes)
             {
-                
+
                 for (int i = 0; i < TxtInput.Text.Length; i++)
                 {
                     valuesVector[i] = int.Parse(TxtInput.Text.Substring(i, 1));
@@ -40,7 +40,7 @@ namespace PostClassDeterminer
                 BooleanFunction booleanFunction = new(valuesVector);
                 RtboxOutput.Text = "Reduced values vector corresponding to essential variables: " +
                     string.Join("", booleanFunction.ValuesVector) +
-                    $"\nNarrowest Post's classes that the function " +
+                    $"\nNarrowest Post's class that the function " +
                     $"belongs to: {string.Join(", ", booleanFunction.FindNarrowestClasses())}";
                 LblT0Out.Text = FuncLib.BoolToSymbol(booleanFunction.IsT0());
                 LblT1Out.Text = FuncLib.BoolToSymbol(booleanFunction.IsT1());
@@ -49,8 +49,8 @@ namespace PostClassDeterminer
                 LblMOut.Text = FuncLib.BoolToSymbol(booleanFunction.IsM());
 
             }
-            
-            else RtboxOutput.Text = "Error: data should consist of '0' or '1' and must be of length which is a power of 2";   
+
+            else RtboxOutput.Text = "Error: data should consist of '0' or '1' and must be of length which is a power of 2";
         }
 
     }

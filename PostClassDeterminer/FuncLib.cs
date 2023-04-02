@@ -15,27 +15,6 @@ namespace PostClassDeterminer
             return (num > 0) && ((num & (num - 1)) == 0);
         }
 
-        // Return all combinations of k element from set of elements
-        public static IEnumerable<IEnumerable<T>> DifferentCombinations<T>(this IEnumerable<T> elements, int k)
-        {
-            return k == 0 ? new[] { Array.Empty<T>() } :
-              elements.SelectMany((e, i) =>
-                elements.Skip(i + 1).DifferentCombinations(k - 1).Select(c => (new[] { e }).Concat(c)));
-        }
-
-        // Converts IEnumerable<IEnumerable<int>> to int jagged array
-        public static int[][] EnumerableToMatrix(this IEnumerable<IEnumerable<int>> enumer)
-        {
-            int combinationsNumber = enumer.Count();
-            int[][] arr = new int[combinationsNumber][];
-            for (int i = 0; i < combinationsNumber; i++)
-            {
-                arr[i] = enumer.ElementAt(i).ToArray();
-            }
-
-            return arr;
-        }
-
         // Return all combinations of k element from set of elements v2.0
         public static int[,] Combinations(int[] numbers, int k)
         {
