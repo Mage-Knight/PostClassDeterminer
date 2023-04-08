@@ -374,77 +374,55 @@ namespace PostClassDeterminer
             {
                 if (IsE0()) return true;
                 else if (IsE1() || !IsT0()) return false;
-                else if (k <= N)
+
+                // Create array of index at which function == 1
+                int[] oneValueIndexes = ValuesVector.Select((val, idx) => new { Value = val, Index = idx })
+                    .Where(x => x.Value == 1)
+                    .Select(x => x.Index)
+                    .ToArray();
+
+                if (oneValueIndexes.Length < k) return !NoJointOne(oneValueIndexes);
+
+                int maxIndex = oneValueIndexes.Length - 1;
+                int searchIndex = oneValueIndexes.Length - 2;
+                // Current combination of indexes
+                int[] curCombIndexes = Enumerable.Range(0, k).ToArray();
+                // Values from oneValueIndexes, that curCombIndexes points at
+                int[] curCombValues = new int[k];
+                // Indicates whether the last combination was reached
+                bool flagStop = false;
+
+                while (true)
                 {
-                    // Create array of index at which function == 1
-                    int[] oneValueIndexes = ValuesVector.Select((val, idx) => new { Value = val, Index = idx })
-                        .Where(x => x.Value == 1)
-                        .Select(x => x.Index)
-                        .ToArray();
-
-                    // Find all combinations of k elements from these indexes
-                    //var enumerableCombinations = indexes.DifferentCombinations(k);
-                    //int[][] combinations = enumerableCombinations.EnumerableToMatrix();
-                    if (oneValueIndexes.Length < k) return !NoJointOne(oneValueIndexes);
-
-                    int maxIndex = oneValueIndexes.Length - 1;
-                    int searchIndex = oneValueIndexes.Length - 2;
-                    int[] curCombIndexes = Enumerable.Range(0, k).ToArray();
-                    int[] curCombValues = new int[k];
-                    bool flagStop = false;
-
-                    while (true)
+                    // Increase last index in curCombIndexes till maxIndex
+                    // and check Whether there is joint 1
+                    while (curCombIndexes[k - 1] <= maxIndex)
                     {
-
-                        while (curCombIndexes[k - 1] <= maxIndex)
+                        for (int j = 0; j < k; j++)
                         {
-                            for (int j = 0; j < k; j++)
-                            {
-                                curCombValues[j] = oneValueIndexes[curCombIndexes[j]];
-                            }
-                            if (NoJointOne(curCombValues)) return false;
-                            curCombIndexes[k - 1]++;
+                            curCombValues[j] = oneValueIndexes[curCombIndexes[j]];
                         }
-                        int p = k - 2;
-                        while (!flagStop && curCombIndexes[p] >= searchIndex)
-                        {
-                            p--;
-                            searchIndex--;
-                            if (p < 0) flagStop = true;
-                        }
-                        if (flagStop) break;
-                        searchIndex = oneValueIndexes.Length - 2;
-                        curCombIndexes[p]++;
-                        for (int i = p + 1; i < k; i++)
-                        {
-                            curCombIndexes[i] = curCombIndexes[i - 1] + 1;
-                        }
-
+                        if (NoJointOne(curCombValues)) return false;
+                        curCombIndexes[k - 1]++;
                     }
-                    //int[,] combinations = FuncLib.Combinations(indexes, k);
-                    ////int[,,] argValues = new int[combinations.Length, k, N];
-                    //string tempString;
+                    int p = k - 2;
+                    // Find the rightmost index in curCombIndexes that can be increased
+                    while (!flagStop && curCombIndexes[p] >= searchIndex)
+                    {
+                        p--;
+                        // Points at biggest possible index for curCombIndexes[p]
+                        searchIndex--;
+                        if (p < 0) flagStop = true;
+                    }
+                    if (flagStop) break;
+                    searchIndex = oneValueIndexes.Length - 2;
+                    curCombIndexes[p]++;
+                    // Reset indexes to the right of curCombIndexes[p]
+                    for (int i = p + 1; i < k; i++)
+                    {
+                        curCombIndexes[i] = curCombIndexes[i - 1] + 1;
+                    }
 
-                    //for (int i = 0; i < combinations.Length; i++)
-                    //{
-                    //    // Create initial vector of ones of length N
-                    //    int[] combAndRes = Enumerable.Repeat(1, N).ToArray();
-                    //    for (int j = 0; j < k; j++)
-                    //    {
-                    //        // Convert index to binary number
-                    //        // This represents values of function arguments
-                    //        tempString = Convert.ToString(combinations[i, j], 2).PadLeft(N, '0');
-
-                    //        // Perform element-wise & operation to vectors of argugemnt values
-                    //        for (int p = 0; p < N; p++)
-                    //        {
-                    //            combAndRes[p] *= int.Parse(tempString.Substring(p, 1));
-                    //        }
-                    //    }
-
-                    //    // If there is no joint '1' -> return false
-                    //    if (Array.TrueForAll(combAndRes, element => element == 0)) return false;
-                    //}
                 }
 
                 return true;
