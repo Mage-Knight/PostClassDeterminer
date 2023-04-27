@@ -18,11 +18,10 @@ namespace PostClassDeterminer
         public class Node
         {
             public string[] DirectParents { get; set; }
-            public string[] AllParents { get; set; }
+            public string[] AllParents { get; set; } = Array.Empty<string>();
             public Node(string[] directParents)
             {
                 DirectParents = directParents;
-                AllParents = Array.Empty<string>();
             }
         }
 
@@ -102,8 +101,6 @@ namespace PostClassDeterminer
                 // Add nodes in queue to visited nodes
                 visited.UnionWith(queue);
 
-                // Initialize number of nodes in queue
-                int count = queue.Count;
                 while (queue.Count > 0)
                 {
                     // Visit next node parents in queue
