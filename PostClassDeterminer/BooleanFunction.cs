@@ -24,6 +24,7 @@ namespace PostClassDeterminer
         public bool[] FlagAndIsM { get; set; } = new bool[] { false, false };
         public bool[] FlagAndIsS { get; set; } = new bool[] { false, false };
         public bool[] FlagAndIsL { get; set; } = new bool[] { false, false };
+        public bool[,] FlagAndIsA_k { get; set; }
 
         // Regular expression to match the input pattern and check
         // whether the className belongs to one of eight infinite families
@@ -79,6 +80,7 @@ namespace PostClassDeterminer
             ValuesVector = new int[valuesVectorCopy.Length];
             Array.Copy(valuesVectorCopy, ValuesVector, valuesVectorCopy.Length);
             N = newN;
+            FlagAndIsA_k = (bool[,])Array.CreateInstance(typeof(bool), Math.Max(N - 1, 1), 2);
             Lattice = new(Math.Max(N, 2));
             DualFunc = new(this, FindDual(ValuesVector), N);
 
@@ -89,6 +91,7 @@ namespace PostClassDeterminer
             ValuesVector = new int[valuesVector.Length];
             Array.Copy(valuesVector, ValuesVector, valuesVector.Length);
             N = n;
+            FlagAndIsA_k = (bool[,])Array.CreateInstance(typeof(bool), Math.Max(N - 1, 1), 2);
             DualFunc = dualPointer;
             Lattice = dualPointer.Lattice;
         }
@@ -146,17 +149,17 @@ namespace PostClassDeterminer
 
         public bool IsM0()
         {
-            return IsM() && IsT0();
+            return IsM01() || IsE0();
         }
 
         public bool IsM1()
         {
-            return IsM() && DualFunc.IsT0();
+            return IsM01() || IsE1();
         }
 
         public bool IsM01()
         {
-            return IsM() && IsT01();
+            return IsT01() && IsM();
         }
 
         public bool IsS()
@@ -164,31 +167,17 @@ namespace PostClassDeterminer
             if (FlagAndIsS[0]) return FlagAndIsS[1];
             else
             {
+
                 FlagAndIsS[0] = true;
+                FlagAndIsS[1] = ValuesVector.SequenceEqual(DualFunc.ValuesVector);
+                return FlagAndIsS[1];
 
-                if (ValuesVector.Length == 1)
-                {
-                    FlagAndIsS[1] = false;
-                    return false;
-                }
-
-                for (int i = 0; i < ValuesVector.Length / 2; i++)
-                {
-                    if (ValuesVector[i] == ValuesVector[ValuesVector.Length - i - 1])
-                    {
-                        FlagAndIsS[1] = false;
-                        return false;
-                    }
-                }
-
-                FlagAndIsS[1] = true;
-                return true;
             }
         }
     
         public bool IsS01()
         {
-            return IsS() && IsT01();
+            return IsT01() && IsS();
         }
             
         public bool IsSM()
@@ -247,22 +236,22 @@ namespace PostClassDeterminer
 
         public bool IsLS()
         {
-            return IsL() && IsS();
+            return IsS() && IsL();
         }
 
         public bool IsL0()
         {
-            return IsL() && IsT0();
+            return IsT0() && IsL();
         }
 
         public bool IsL1()
         {
-            return IsL() && DualFunc.IsT0();
+            return IsT1() && IsL();
         }
 
         public bool IsL01()
         {
-            return IsL() && IsT01();
+            return IsT01() && IsL();
         }
 
         public bool IsE0()
@@ -302,7 +291,7 @@ namespace PostClassDeterminer
 
         public bool IsOM()
         {
-            return IsO0() || IsO1();
+            return IsO0() || IsE1();
         }
 
         public bool IsO()
@@ -315,17 +304,12 @@ namespace PostClassDeterminer
 
             if (ValuesVector[^1] == 1 && !IsE1())
             {
-                bool allZeroesBeforeLast = true;
                 for (int i = 0; i < ValuesVector.Length - 1; i++)
                 {
-                    if (ValuesVector[i] != 0)
-                    {
-                        allZeroesBeforeLast = false;
-                        break;
-                    }
+                    if (ValuesVector[i] != 0) return false;
                 }
 
-                return allZeroesBeforeLast;
+                return true;
 
             }
 
@@ -334,17 +318,17 @@ namespace PostClassDeterminer
 
         public bool IsP0()
         {
-            return IsP01() || IsE0();
+            return IsE0() || IsP01();
         }
 
         public bool IsP1()
         {
-            return IsP01() || IsE1();
+            return IsE1() || IsP01();
         }
 
         public bool IsP()
         {
-            return IsP01() || IsE0() || IsE1();
+            return IsE() || IsP01();
         }
 
         public bool IsP01_d()
@@ -370,66 +354,87 @@ namespace PostClassDeterminer
         public bool IsA_k(int k)
         {
             // No sense in checking for k > N, because A_N == A_inf
-            if (k >= 2)
+            if (2 <= k && k <= N)
             {
-                if (IsE0()) return true;
-                else if (IsE1() || !IsT0()) return false;
-
-                // Create array of index at which function == 1
-                int[] oneValueIndexes = ValuesVector.Select((val, idx) => new { Value = val, Index = idx })
-                    .Where(x => x.Value == 1)
-                    .Select(x => x.Index)
-                    .ToArray();
-
-                if (oneValueIndexes.Length < k) return !NoJointOne(oneValueIndexes);
-
-                int maxIndex = oneValueIndexes.Length - 1;
-                int searchIndex = oneValueIndexes.Length - 2;
-                // Current combination of indexes
-                int[] curCombIndexes = Enumerable.Range(0, k).ToArray();
-                // Values from oneValueIndexes, that curCombIndexes points at
-                int[] curCombValues = new int[k];
-                // Indicates whether the last combination was reached
-                bool flagStop = false;
-
-                while (true)
+                if (FlagAndIsA_k[k - 2, 0]) return FlagAndIsA_k[k - 2, 1];
+                else
                 {
-                    // Increase last index in curCombIndexes till maxIndex
-                    // and check Whether there is joint 1
-                    while (curCombIndexes[k - 1] <= maxIndex)
+                    FlagAndIsA_k[k - 2, 0] = true;
+                    if (IsE0())
                     {
-                        for (int j = 0; j < k; j++)
+                        FlagAndIsA_k[k - 2, 1] = true;
+                        return true;
+                    }
+                    else if (IsE1() || !IsT0())
+                    {
+                        FlagAndIsA_k[k - 2, 1] = false;
+                        return false;
+                    }
+                    else
+                    {
+                        // Create array of index at which function == 1
+                        int[] oneValueIndexes = ValuesVector.Select((val, idx) => new { Value = val, Index = idx })
+                            .Where(x => x.Value == 1)
+                            .Select(x => x.Index)
+                            .ToArray();
+
+                        if (oneValueIndexes.Length < k) return !NoJointOne(oneValueIndexes);
+                        else
                         {
-                            curCombValues[j] = oneValueIndexes[curCombIndexes[j]];
+                            int maxIndex = oneValueIndexes.Length - 1;
+                            int searchIndex = oneValueIndexes.Length - 2;
+                            // Current combination of indexes
+                            int[] curCombIndexes = Enumerable.Range(0, k).ToArray();
+                            // Values from oneValueIndexes, that curCombIndexes points at
+                            int[] curCombValues = new int[k];
+                            // Indicates whether the last combination was reached
+                            bool flagStop = false;
+
+                            while (true)
+                            {
+                                // Increase last index in curCombIndexes till maxIndex
+                                // and check Whether there is joint 1
+                                while (curCombIndexes[k - 1] <= maxIndex)
+                                {
+                                    for (int j = 0; j < k; j++)
+                                    {
+                                        curCombValues[j] = oneValueIndexes[curCombIndexes[j]];
+                                    }
+                                    if (NoJointOne(curCombValues)) {
+                                        FlagAndIsA_k[k - 2, 1] = false;
+                                        return false;
+                                    }
+                                    curCombIndexes[k - 1]++;
+                                }
+                                int p = k - 2;
+                                // Find the rightmost index in curCombIndexes that can be increased
+                                while (!flagStop && curCombIndexes[p] >= searchIndex)
+                                {
+                                    p--;
+                                    // Points at biggest possible index for curCombIndexes[p]
+                                    searchIndex--;
+                                    if (p < 0) flagStop = true;
+                                }
+                                if (flagStop) break;
+                                searchIndex = oneValueIndexes.Length - 2;
+                                curCombIndexes[p]++;
+                                // Reset indexes to the right of curCombIndexes[p]
+                                for (int i = p + 1; i < k; i++)
+                                {
+                                    curCombIndexes[i] = curCombIndexes[i - 1] + 1;
+                                }
+
+                            }
+
+                            FlagAndIsA_k[k - 2, 1] = true;
+                            return true;
+
                         }
-                        if (NoJointOne(curCombValues)) return false;
-                        curCombIndexes[k - 1]++;
                     }
-                    int p = k - 2;
-                    // Find the rightmost index in curCombIndexes that can be increased
-                    while (!flagStop && curCombIndexes[p] >= searchIndex)
-                    {
-                        p--;
-                        // Points at biggest possible index for curCombIndexes[p]
-                        searchIndex--;
-                        if (p < 0) flagStop = true;
-                    }
-                    if (flagStop) break;
-                    searchIndex = oneValueIndexes.Length - 2;
-                    curCombIndexes[p]++;
-                    // Reset indexes to the right of curCombIndexes[p]
-                    for (int i = p + 1; i < k; i++)
-                    {
-                        curCombIndexes[i] = curCombIndexes[i - 1] + 1;
-                    }
-
                 }
-
-                return true;
-
             }
 
-            else throw new Exception("k > N");
+            else throw new Exception("Illegal k (doesn't satisfy 2 <= k <= N)");
         }
     
         public bool NoJointOne(int[] indexes)
@@ -444,7 +449,7 @@ namespace PostClassDeterminer
                 // This represents values of function arguments
                 tempString = Convert.ToString(indexes[j], 2).PadLeft(N, '0');
 
-                // Perform element-wise & operation to vectors of argugemnt values
+                // Perform element-wise & operation to vectors of argument values
                 for (int p = 0; p < N; p++)
                 {
                     combAndRes[p] *= int.Parse(tempString.Substring(p, 1));
@@ -467,7 +472,7 @@ namespace PostClassDeterminer
 
         public bool IsMA1_k(int k)
         {
-            return IsM() && IsA1_k(k);
+            return IsM1() && IsA_k(k);
         }
 
         public bool Is_a_k(int k)
@@ -477,7 +482,7 @@ namespace PostClassDeterminer
 
         public bool IsMa_k(int k)
         {
-            return DualFunc.IsMA_k(k);
+            return IsM() && Is_a_k(k);
         }
 
         public bool Is_a0_k(int k)
@@ -487,7 +492,7 @@ namespace PostClassDeterminer
 
         public bool IsMa0_k(int k)
         {
-            return DualFunc.IsMA1_k(k);
+            return IsM() && Is_a0_k(k);
         }
 
         public static int[] FindDual(int[] func)
@@ -511,30 +516,25 @@ namespace PostClassDeterminer
             }
         }   
     
-        public string[] FindNarrowestClasses()
+        public string FindNarrowestClass()
         {
-            List<string> nodesList = Lattice.SortedParentCount.ToList();
-            for (int i = 0; i < nodesList.Count; i++)
+            string[] sortedByParentCountRef = Lattice.SortedParentCount;
+            for (int i = 0; i < sortedByParentCountRef.Length; i++)
             {
-                if (BelongsToCLass(nodesList[i]))
+                if (BelongsToCLass(sortedByParentCountRef[i]))
                 {
-                    nodesList.RemoveAll(elem => Lattice.Elements[nodesList[i]].AllParents.Contains(elem));
-
                     // If the node belongs to one of 8 infinite families
                     // and k == N we replace k with "inf"
-                    if (Regex.IsMatch(nodesList[i], patternCheck) && Int32.Parse(nodesList[i].Split('_')[1]) == N)
+                    if (Regex.IsMatch(sortedByParentCountRef[i], patternCheck) && Int32.Parse(sortedByParentCountRef[i].Split('_')[1]) == N)
                     {
-                        nodesList[i] = nodesList[i].Split('_')[0] + "_inf";
+                        return sortedByParentCountRef[i].Split('_')[0] + "_inf";
                     }
+                    else return sortedByParentCountRef[i];
 
                 }
-                else
-                {
-                    nodesList.RemoveAt(i);
-                    i--;
-                }
             }
-            return nodesList.ToArray();
+
+            throw new Exception("Impossible situation: boolean function doesn't belong to any class");
         }
 
         // Check if this belongs to Post's class className
