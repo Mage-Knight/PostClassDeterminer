@@ -436,28 +436,20 @@ namespace PostClassDeterminer
 
             else throw new Exception("Illegal k (doesn't satisfy 2 <= k <= N)");
         }
-    
+
         public bool NoJointOne(int[] indexes)
         {
-            // Create initial vector of ones of length N
-            int[] combAndRes = Enumerable.Repeat(1, N).ToArray();
-            string tempString;
+            // Create initial vector
+            int combAndRes = indexes[0];
 
-            for (int j = 0; j < indexes.Length; j++)
-            {
-                // Convert index to binary number
-                // This represents values of function arguments
-                tempString = Convert.ToString(indexes[j], 2).PadLeft(N, '0');
+            // This represents values of function arguments
+            // Perform element-wise & operation to vectors of argument values
+            for (int j = 1; j < indexes.Length; j++) { combAndRes &= indexes[j]; }
 
-                // Perform element-wise & operation to vectors of argument values
-                for (int p = 0; p < N; p++)
-                {
-                    combAndRes[p] *= int.Parse(tempString.Substring(p, 1));
-                }
-            }
-
+            // Convert index to binary number of length N
+            int[] bitwiseAndArray = Convert.ToString(combAndRes, 2).PadLeft(N, '0').Select(n => (int)Char.GetNumericValue(n)).ToArray();
             // If there is no joint '1' -> return true
-            return Array.TrueForAll(combAndRes, element => element == 0);
+            return Array.TrueForAll(bitwiseAndArray, element => element == 0);
         }
 
         public bool IsMA_k(int k)
