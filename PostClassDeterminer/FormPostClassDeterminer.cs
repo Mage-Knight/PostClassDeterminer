@@ -41,7 +41,7 @@ namespace PostClassDeterminer
                 RtboxOutput.Text = "Reduced values vector corresponding to essential variables: " +
                     string.Join("", booleanFunction.ValuesVector) +
                     $"\nNarrowest Post's class that the function " +
-                    $"belongs to: {string.Join(", ", booleanFunction.FindNarrowestClasses())}";
+                    "belongs to: " + booleanFunction.FindNarrowestClass();
                 LblT0Out.Text = FuncLib.BoolToSymbol(booleanFunction.IsT0());
                 LblT1Out.Text = FuncLib.BoolToSymbol(booleanFunction.IsT1());
                 LblSOut.Text = FuncLib.BoolToSymbol(booleanFunction.IsS());
