@@ -15,10 +15,20 @@ namespace PostClassDeterminer
             return (num > 0) && ((num & (num - 1)) == 0);
         }
 
+        // Currently not used
         // Return all combinations of k element from set of elements v2.0
         public static int[,] Combinations(int[] numbers, int k)
         {
-            if (numbers.Length < k) return (int[,])numbers.Clone();
+            if (numbers.Length < k)
+            {
+                int[,] numbersAddedDimension = new int[1, numbers.Length];
+
+                for (int i = 0; i < numbers.Length; i++)
+                {
+                    numbersAddedDimension[0, i] = numbers[i];
+                }
+                return numbersAddedDimension;
+            }
             BigInteger numerator = 1;
             BigInteger denominator = 1;
             //int res = 1;
