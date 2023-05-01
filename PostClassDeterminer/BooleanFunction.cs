@@ -382,15 +382,13 @@ namespace PostClassDeterminer
                         else
                         {
                             int maxIndex = oneValueIndexes.Length - 1;
-                            int searchIndex = oneValueIndexes.Length - 2;
                             // Current combination of indexes
                             int[] curCombIndexes = Enumerable.Range(0, k).ToArray();
                             // Values from oneValueIndexes, that curCombIndexes points at
                             int[] curCombValues = new int[k];
-                            // Indicates whether the last combination was reached
-                            bool flagStop = false;
 
-                            while (true)
+                            // Perform cycle, until the last combination was reached
+                            do
                             {
                                 // Increase last index in curCombIndexes till maxIndex
                                 // and check Whether there is joint 1
@@ -400,31 +398,15 @@ namespace PostClassDeterminer
                                     {
                                         curCombValues[j] = oneValueIndexes[curCombIndexes[j]];
                                     }
-                                    if (NoJointOne(curCombValues)) {
+                                    if (NoJointOne(curCombValues))
+                                    {
                                         FlagAndIsA_k[k - 2, 1] = false;
                                         return false;
                                     }
                                     curCombIndexes[k - 1]++;
                                 }
-                                int p = k - 2;
-                                // Find the rightmost index in curCombIndexes that can be increased
-                                while (!flagStop && curCombIndexes[p] >= searchIndex)
-                                {
-                                    p--;
-                                    // Points at biggest possible index for curCombIndexes[p]
-                                    searchIndex--;
-                                    if (p < 0) flagStop = true;
-                                }
-                                if (flagStop) break;
-                                searchIndex = oneValueIndexes.Length - 2;
-                                curCombIndexes[p]++;
-                                // Reset indexes to the right of curCombIndexes[p]
-                                for (int i = p + 1; i < k; i++)
-                                {
-                                    curCombIndexes[i] = curCombIndexes[i - 1] + 1;
-                                }
 
-                            }
+                            } while (FuncLib.NextCombination(k, curCombIndexes));
 
                             FlagAndIsA_k[k - 2, 1] = true;
                             return true;
@@ -444,12 +426,12 @@ namespace PostClassDeterminer
 
             // This represents values of function arguments
             // Perform element-wise & operation to vectors of argument values
-            for (int j = 1; j < indexes.Length; j++) { combAndRes &= indexes[j]; }
+            for (int i = 1; i < indexes.Length; i++) { combAndRes &= indexes[i]; }
 
             // Convert index to binary number of length N
             int[] bitwiseAndArray = Convert.ToString(combAndRes, 2).PadLeft(N, '0').Select(n => (int)Char.GetNumericValue(n)).ToArray();
             // If there is no joint '1' -> return true
-            return Array.TrueForAll(bitwiseAndArray, element => element == 0);
+            return (bitwiseAndArray.SequenceEqual(new int[N]));
         }
 
         public bool IsMA_k(int k)
