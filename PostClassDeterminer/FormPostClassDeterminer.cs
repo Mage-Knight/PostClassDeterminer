@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Drawing.Drawing2D;
 using System.Text.RegularExpressions;
 
 // Doesn't work with 1101001110011010011101111101000001111010111010011101101001000101 (solved)
@@ -14,13 +11,12 @@ namespace PostClassDeterminer
             InitializeComponent();
         }
 
-        private void FormPostClassDeterminer_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void BtnDetermine_Click(object sender, EventArgs e)
         {
+            // Start timer
+            System.Diagnostics.Stopwatch watch = new();
+            watch.Restart();
+
             int[] valuesVector = new int[RtboxInput.Text.Length];
 
             // Define the regular expression pattern to match '0' or '1'
@@ -49,6 +45,10 @@ namespace PostClassDeterminer
                 LblLOut.Text = FuncLib.BoolToSymbol(booleanFunction.IsL());
                 LblMOut.Text = FuncLib.BoolToSymbol(booleanFunction.IsM());
 
+                // Stop timer
+                watch.Stop();
+                RtboxOutput.Text += $"\nExecution time: {TimeSpan.FromTicks((long)watch.Elapsed.Ticks)} ms";
+
             }
 
             else RtboxOutput.Text = "Error: data should consist of '0' or '1' and must be of length which is a power of 2";
@@ -70,6 +70,15 @@ namespace PostClassDeterminer
             this.Close();
         }
 
+        private void RtboxInput_TextChanged(object sender, EventArgs e)
+        {
+            LblSymbolCountValue.Text = RtboxInput.Text.Length.ToString();
+        }
+
+        private void BtnClearText_Click(object sender, EventArgs e)
+        {
+            RtboxInput.Text = "";
+        }
     }
 }
 
