@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Drawing.Drawing2D;
 using System.Text.RegularExpressions;
 
 // Doesn't work with 1101001110011010011101111101000001111010111010011101101001000101 (solved)
@@ -20,21 +21,21 @@ namespace PostClassDeterminer
 
         private void BtnDetermine_Click(object sender, EventArgs e)
         {
-            int[] valuesVector = new int[TxtInput.Text.Length];
+            int[] valuesVector = new int[RtboxInput.Text.Length];
 
             // Define the regular expression pattern to match '0' or '1'
             string pattern = "^[01]+$";
             // Create a regular expression object with the pattern
             Regex regex = new(pattern);
             // Use the IsMatch method to check whether the input string matches the pattern
-            bool isZerosOnes = regex.IsMatch(TxtInput.Text);
+            bool isZerosOnes = regex.IsMatch(RtboxInput.Text);
 
-            if (FuncLib.IsPowerOfTwo(TxtInput.Text.Length) && isZerosOnes)
+            if (FuncLib.IsPowerOfTwo(RtboxInput.Text.Length) && isZerosOnes)
             {
 
-                for (int i = 0; i < TxtInput.Text.Length; i++)
+                for (int i = 0; i < RtboxInput.Text.Length; i++)
                 {
-                    valuesVector[i] = int.Parse(TxtInput.Text.Substring(i, 1));
+                    valuesVector[i] = int.Parse(RtboxInput.Text.Substring(i, 1));
                 }
 
                 BooleanFunction booleanFunction = new(valuesVector);
@@ -51,6 +52,22 @@ namespace PostClassDeterminer
             }
 
             else RtboxOutput.Text = "Error: data should consist of '0' or '1' and must be of length which is a power of 2";
+        }
+
+        // Read values vector from a file by clicking the button
+        private void BtnChooseFilePath_Click(object sender, EventArgs e)
+        {
+            if (OpnfilediagChooseFile.ShowDialog() == DialogResult.OK)
+            {
+                StreamReader sr = new(OpnfilediagChooseFile.FileName);
+                RtboxInput.Text = sr.ReadToEnd();
+                sr.Close();
+            }
+        }
+
+        private void BtnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
     }

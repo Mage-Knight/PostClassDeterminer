@@ -32,7 +32,6 @@ namespace PostClassDeterminer
         {
             this.LblActionDescription = new System.Windows.Forms.Label();
             this.BtnDetermine = new System.Windows.Forms.Button();
-            this.TxtInput = new System.Windows.Forms.TextBox();
             this.RtboxOutput = new System.Windows.Forms.RichTextBox();
             this.GrpboxPrecompleteClasses = new System.Windows.Forms.GroupBox();
             this.LblSOut = new System.Windows.Forms.Label();
@@ -45,44 +44,47 @@ namespace PostClassDeterminer
             this.LblM = new System.Windows.Forms.Label();
             this.LblT1 = new System.Windows.Forms.Label();
             this.LblT0 = new System.Windows.Forms.Label();
+            this.RtboxInput = new System.Windows.Forms.RichTextBox();
+            this.LblOutput = new System.Windows.Forms.Label();
+            this.OpnfilediagChooseFile = new System.Windows.Forms.OpenFileDialog();
+            this.BtnChooseFilePath = new System.Windows.Forms.Button();
+            this.BtnClose = new System.Windows.Forms.Button();
             this.GrpboxPrecompleteClasses.SuspendLayout();
             this.SuspendLayout();
             // 
             // LblActionDescription
             // 
-            this.LblActionDescription.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LblActionDescription.Location = new System.Drawing.Point(12, 29);
+            this.LblActionDescription.Font = new System.Drawing.Font("Calibri", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblActionDescription.Location = new System.Drawing.Point(26, 27);
             this.LblActionDescription.Name = "LblActionDescription";
             this.LblActionDescription.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.LblActionDescription.Size = new System.Drawing.Size(424, 43);
+            this.LblActionDescription.Size = new System.Drawing.Size(383, 43);
             this.LblActionDescription.TabIndex = 0;
             this.LblActionDescription.Text = "Enter boolean function vector of values:";
             this.LblActionDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // BtnDetermine
             // 
-            this.BtnDetermine.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnDetermine.Location = new System.Drawing.Point(117, 131);
+            this.BtnDetermine.BackColor = System.Drawing.Color.Orange;
+            this.BtnDetermine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnDetermine.Font = new System.Drawing.Font("Calibri", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnDetermine.ForeColor = System.Drawing.SystemColors.Window;
+            this.BtnDetermine.Location = new System.Drawing.Point(472, 186);
             this.BtnDetermine.Name = "BtnDetermine";
-            this.BtnDetermine.Size = new System.Drawing.Size(186, 40);
+            this.BtnDetermine.Size = new System.Drawing.Size(295, 40);
             this.BtnDetermine.TabIndex = 1;
             this.BtnDetermine.Text = "Start";
-            this.BtnDetermine.UseVisualStyleBackColor = true;
+            this.BtnDetermine.UseVisualStyleBackColor = false;
             this.BtnDetermine.Click += new System.EventHandler(this.BtnDetermine_Click);
-            // 
-            // TxtInput
-            // 
-            this.TxtInput.Location = new System.Drawing.Point(27, 83);
-            this.TxtInput.Name = "TxtInput";
-            this.TxtInput.Size = new System.Drawing.Size(377, 27);
-            this.TxtInput.TabIndex = 3;
             // 
             // RtboxOutput
             // 
+            this.RtboxOutput.BackColor = System.Drawing.SystemColors.Window;
             this.RtboxOutput.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.RtboxOutput.Location = new System.Drawing.Point(26, 204);
+            this.RtboxOutput.Location = new System.Drawing.Point(26, 304);
             this.RtboxOutput.Name = "RtboxOutput";
-            this.RtboxOutput.Size = new System.Drawing.Size(751, 241);
+            this.RtboxOutput.ReadOnly = true;
+            this.RtboxOutput.Size = new System.Drawing.Size(751, 141);
             this.RtboxOutput.TabIndex = 4;
             this.RtboxOutput.Text = "";
             // 
@@ -98,7 +100,7 @@ namespace PostClassDeterminer
             this.GrpboxPrecompleteClasses.Controls.Add(this.LblM);
             this.GrpboxPrecompleteClasses.Controls.Add(this.LblT1);
             this.GrpboxPrecompleteClasses.Controls.Add(this.LblT0);
-            this.GrpboxPrecompleteClasses.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.GrpboxPrecompleteClasses.Font = new System.Drawing.Font("Calibri", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.GrpboxPrecompleteClasses.Location = new System.Drawing.Point(472, 29);
             this.GrpboxPrecompleteClasses.Name = "GrpboxPrecompleteClasses";
             this.GrpboxPrecompleteClasses.Size = new System.Drawing.Size(295, 142);
@@ -216,14 +218,72 @@ namespace PostClassDeterminer
             this.LblT0.Text = "T0";
             this.LblT0.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // RtboxInput
+            // 
+            this.RtboxInput.Location = new System.Drawing.Point(26, 73);
+            this.RtboxInput.Name = "RtboxInput";
+            this.RtboxInput.Size = new System.Drawing.Size(383, 165);
+            this.RtboxInput.TabIndex = 6;
+            this.RtboxInput.Text = "";
+            // 
+            // LblOutput
+            // 
+            this.LblOutput.Font = new System.Drawing.Font("Calibri", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblOutput.Location = new System.Drawing.Point(26, 258);
+            this.LblOutput.Name = "LblOutput";
+            this.LblOutput.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.LblOutput.Size = new System.Drawing.Size(85, 43);
+            this.LblOutput.TabIndex = 7;
+            this.LblOutput.Text = "Output:";
+            this.LblOutput.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // OpnfilediagChooseFile
+            // 
+            this.OpnfilediagChooseFile.DefaultExt = "txt";
+            this.OpnfilediagChooseFile.Filter = "txt files (*.txt)|*.txt";
+            this.OpnfilediagChooseFile.InitialDirectory = "C:\\";
+            this.OpnfilediagChooseFile.Title = "Choose file with values vector sequence:";
+            // 
+            // BtnChooseFilePath
+            // 
+            this.BtnChooseFilePath.BackColor = System.Drawing.Color.Orange;
+            this.BtnChooseFilePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnChooseFilePath.Font = new System.Drawing.Font("Bauhaus 93", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnChooseFilePath.ForeColor = System.Drawing.SystemColors.Window;
+            this.BtnChooseFilePath.Location = new System.Drawing.Point(472, 244);
+            this.BtnChooseFilePath.Name = "BtnChooseFilePath";
+            this.BtnChooseFilePath.Size = new System.Drawing.Size(137, 43);
+            this.BtnChooseFilePath.TabIndex = 8;
+            this.BtnChooseFilePath.Text = "...";
+            this.BtnChooseFilePath.UseVisualStyleBackColor = false;
+            this.BtnChooseFilePath.Click += new System.EventHandler(this.BtnChooseFilePath_Click);
+            // 
+            // BtnClose
+            // 
+            this.BtnClose.BackColor = System.Drawing.Color.Orange;
+            this.BtnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnClose.Font = new System.Drawing.Font("Calibri", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnClose.ForeColor = System.Drawing.SystemColors.Window;
+            this.BtnClose.Location = new System.Drawing.Point(630, 244);
+            this.BtnClose.Name = "BtnClose";
+            this.BtnClose.Size = new System.Drawing.Size(137, 43);
+            this.BtnClose.TabIndex = 9;
+            this.BtnClose.Text = "Close";
+            this.BtnClose.UseVisualStyleBackColor = false;
+            this.BtnClose.Click += new System.EventHandler(this.BtnClose_Click);
+            // 
             // FormPostClassDeterminer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(802, 472);
+            this.Controls.Add(this.BtnClose);
+            this.Controls.Add(this.BtnChooseFilePath);
+            this.Controls.Add(this.LblOutput);
+            this.Controls.Add(this.RtboxInput);
             this.Controls.Add(this.GrpboxPrecompleteClasses);
             this.Controls.Add(this.RtboxOutput);
-            this.Controls.Add(this.TxtInput);
             this.Controls.Add(this.BtnDetermine);
             this.Controls.Add(this.LblActionDescription);
             this.Name = "FormPostClassDeterminer";
@@ -231,7 +291,6 @@ namespace PostClassDeterminer
             this.Load += new System.EventHandler(this.FormPostClassDeterminer_Load);
             this.GrpboxPrecompleteClasses.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -239,7 +298,6 @@ namespace PostClassDeterminer
 
         private Label LblActionDescription;
         private Button BtnDetermine;
-        private TextBox TxtInput;
         private RichTextBox RtboxOutput;
         private GroupBox GrpboxPrecompleteClasses;
         private Label LblT0;
@@ -252,5 +310,10 @@ namespace PostClassDeterminer
         private Label LblL;
         private Label LblM;
         private Label LblT1;
+        private RichTextBox RtboxInput;
+        private Label LblOutput;
+        private OpenFileDialog OpnfilediagChooseFile;
+        private Button BtnChooseFilePath;
+        private Button BtnClose;
     }
 }
