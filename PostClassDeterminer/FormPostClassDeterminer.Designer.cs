@@ -49,6 +49,9 @@ namespace PostClassDeterminer
             this.OpnfilediagChooseFile = new System.Windows.Forms.OpenFileDialog();
             this.BtnChooseFilePath = new System.Windows.Forms.Button();
             this.BtnClose = new System.Windows.Forms.Button();
+            this.LblSymbolCountValue = new System.Windows.Forms.Label();
+            this.LblSymbolCountText = new System.Windows.Forms.Label();
+            this.BtnClearText = new System.Windows.Forms.Button();
             this.GrpboxPrecompleteClasses.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,10 +84,10 @@ namespace PostClassDeterminer
             // 
             this.RtboxOutput.BackColor = System.Drawing.SystemColors.Window;
             this.RtboxOutput.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.RtboxOutput.Location = new System.Drawing.Point(26, 304);
+            this.RtboxOutput.Location = new System.Drawing.Point(26, 345);
             this.RtboxOutput.Name = "RtboxOutput";
             this.RtboxOutput.ReadOnly = true;
-            this.RtboxOutput.Size = new System.Drawing.Size(751, 141);
+            this.RtboxOutput.Size = new System.Drawing.Size(741, 153);
             this.RtboxOutput.TabIndex = 4;
             this.RtboxOutput.Text = "";
             // 
@@ -222,14 +225,15 @@ namespace PostClassDeterminer
             // 
             this.RtboxInput.Location = new System.Drawing.Point(26, 73);
             this.RtboxInput.Name = "RtboxInput";
-            this.RtboxInput.Size = new System.Drawing.Size(383, 165);
+            this.RtboxInput.Size = new System.Drawing.Size(417, 181);
             this.RtboxInput.TabIndex = 6;
             this.RtboxInput.Text = "";
+            this.RtboxInput.TextChanged += new System.EventHandler(this.RtboxInput_TextChanged);
             // 
             // LblOutput
             // 
             this.LblOutput.Font = new System.Drawing.Font("Calibri", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LblOutput.Location = new System.Drawing.Point(26, 258);
+            this.LblOutput.Location = new System.Drawing.Point(26, 299);
             this.LblOutput.Name = "LblOutput";
             this.LblOutput.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.LblOutput.Size = new System.Drawing.Size(85, 43);
@@ -250,7 +254,7 @@ namespace PostClassDeterminer
             this.BtnChooseFilePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnChooseFilePath.Font = new System.Drawing.Font("Bauhaus 93", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnChooseFilePath.ForeColor = System.Drawing.SystemColors.Window;
-            this.BtnChooseFilePath.Location = new System.Drawing.Point(472, 244);
+            this.BtnChooseFilePath.Location = new System.Drawing.Point(472, 232);
             this.BtnChooseFilePath.Name = "BtnChooseFilePath";
             this.BtnChooseFilePath.Size = new System.Drawing.Size(137, 43);
             this.BtnChooseFilePath.TabIndex = 8;
@@ -264,7 +268,7 @@ namespace PostClassDeterminer
             this.BtnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnClose.Font = new System.Drawing.Font("Calibri", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnClose.ForeColor = System.Drawing.SystemColors.Window;
-            this.BtnClose.Location = new System.Drawing.Point(630, 244);
+            this.BtnClose.Location = new System.Drawing.Point(630, 232);
             this.BtnClose.Name = "BtnClose";
             this.BtnClose.Size = new System.Drawing.Size(137, 43);
             this.BtnClose.TabIndex = 9;
@@ -272,12 +276,53 @@ namespace PostClassDeterminer
             this.BtnClose.UseVisualStyleBackColor = false;
             this.BtnClose.Click += new System.EventHandler(this.BtnClose_Click);
             // 
+            // LblSymbolCountValue
+            // 
+            this.LblSymbolCountValue.BackColor = System.Drawing.Color.Orange;
+            this.LblSymbolCountValue.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblSymbolCountValue.ForeColor = System.Drawing.SystemColors.Window;
+            this.LblSymbolCountValue.Location = new System.Drawing.Point(176, 257);
+            this.LblSymbolCountValue.Name = "LblSymbolCountValue";
+            this.LblSymbolCountValue.Size = new System.Drawing.Size(267, 30);
+            this.LblSymbolCountValue.TabIndex = 10;
+            this.LblSymbolCountValue.Text = "0";
+            this.LblSymbolCountValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // LblSymbolCountText
+            // 
+            this.LblSymbolCountText.BackColor = System.Drawing.Color.Orange;
+            this.LblSymbolCountText.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblSymbolCountText.ForeColor = System.Drawing.SystemColors.Window;
+            this.LblSymbolCountText.Location = new System.Drawing.Point(26, 257);
+            this.LblSymbolCountText.Name = "LblSymbolCountText";
+            this.LblSymbolCountText.Size = new System.Drawing.Size(144, 30);
+            this.LblSymbolCountText.TabIndex = 11;
+            this.LblSymbolCountText.Text = "Values count:";
+            this.LblSymbolCountText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // BtnClearText
+            // 
+            this.BtnClearText.BackColor = System.Drawing.Color.Orange;
+            this.BtnClearText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnClearText.Font = new System.Drawing.Font("Calibri", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnClearText.ForeColor = System.Drawing.SystemColors.Window;
+            this.BtnClearText.Location = new System.Drawing.Point(472, 281);
+            this.BtnClearText.Name = "BtnClearText";
+            this.BtnClearText.Size = new System.Drawing.Size(295, 40);
+            this.BtnClearText.TabIndex = 12;
+            this.BtnClearText.Text = "Clear text";
+            this.BtnClearText.UseVisualStyleBackColor = false;
+            this.BtnClearText.Click += new System.EventHandler(this.BtnClearText_Click);
+            // 
             // FormPostClassDeterminer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(802, 472);
+            this.ClientSize = new System.Drawing.Size(793, 521);
+            this.Controls.Add(this.BtnClearText);
+            this.Controls.Add(this.LblSymbolCountText);
+            this.Controls.Add(this.LblSymbolCountValue);
             this.Controls.Add(this.BtnClose);
             this.Controls.Add(this.BtnChooseFilePath);
             this.Controls.Add(this.LblOutput);
@@ -287,8 +332,7 @@ namespace PostClassDeterminer
             this.Controls.Add(this.BtnDetermine);
             this.Controls.Add(this.LblActionDescription);
             this.Name = "FormPostClassDeterminer";
-            this.Text = "App";
-            this.Load += new System.EventHandler(this.FormPostClassDeterminer_Load);
+            this.Text = "Narrowest Post\'s class";
             this.GrpboxPrecompleteClasses.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -315,5 +359,8 @@ namespace PostClassDeterminer
         private OpenFileDialog OpnfilediagChooseFile;
         private Button BtnChooseFilePath;
         private Button BtnClose;
+        private Label LblSymbolCountValue;
+        private Label LblSymbolCountText;
+        private Button BtnClearText;
     }
 }
