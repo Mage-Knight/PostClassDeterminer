@@ -63,8 +63,8 @@ namespace PostClassDeterminer
             this.LblActionDescription.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.LblActionDescription.Size = new System.Drawing.Size(383, 43);
             this.LblActionDescription.TabIndex = 0;
-            this.LblActionDescription.Text = "Enter boolean function vector of values:";
-            this.LblActionDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LblActionDescription.Text = "Enter boolean function values vector:";
+            this.LblActionDescription.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // BtnDetermine
             // 
@@ -239,7 +239,7 @@ namespace PostClassDeterminer
             this.LblOutput.Size = new System.Drawing.Size(85, 43);
             this.LblOutput.TabIndex = 7;
             this.LblOutput.Text = "Output:";
-            this.LblOutput.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LblOutput.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // OpnfilediagChooseFile
             // 
