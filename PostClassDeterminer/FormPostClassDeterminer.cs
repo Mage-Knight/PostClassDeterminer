@@ -47,7 +47,7 @@ namespace PostClassDeterminer
 
                 // Stop timer
                 watch.Stop();
-                RtboxOutput.Text += $"\nExecution time: {TimeSpan.FromTicks((long)watch.Elapsed.Ticks)} ms";
+                RtboxOutput.Text += $"\nExecution time: {TimeSpan.FromTicks((long)watch.Elapsed.Ticks)}";
 
             }
 
@@ -72,7 +72,7 @@ namespace PostClassDeterminer
 
         private void RtboxInput_TextChanged(object sender, EventArgs e)
         {
-            LblSymbolCountValue.Text = RtboxInput.Text.Length.ToString();
+            LblSymbolCountValue.Text = RtboxInput.Text.Count(x => Char.IsDigit(x)).ToString();
         }
 
         private void BtnClearText_Click(object sender, EventArgs e)
