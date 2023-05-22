@@ -279,7 +279,7 @@ namespace PostClassDeterminer
 
         public bool IsOM()
         {
-            return IsO0() || IsE1();
+            return IsE() || IsO01();
         }
 
         public bool IsO()
@@ -382,9 +382,9 @@ namespace PostClassDeterminer
                                 // and check Whether there is joint 1
                                 while (curCombIndexes[k - 1] <= maxIndex)
                                 {
-                                    for (int j = 0; j < k; j++)
+                                    for (int i = 0; i < k; i++)
                                     {
-                                        curCombValues[j] = oneValueIndexes[curCombIndexes[j]];
+                                        curCombValues[i] = oneValueIndexes[curCombIndexes[i]];
                                     }
                                     if (NoJointOne(curCombValues))
                                     {
@@ -483,7 +483,7 @@ namespace PostClassDeterminer
             string[] sortedByParentCountRef = Lattice.SortedParentCount;
             for (int i = 0; i < sortedByParentCountRef.Length; i++)
             {
-                if (BelongsToCLass(sortedByParentCountRef[i]))
+                if (BelongsToClass(sortedByParentCountRef[i]))
                 {
                     // If the node belongs to one of 8 infinite families
                     // and k == N we replace k with "inf"
@@ -500,7 +500,7 @@ namespace PostClassDeterminer
         }
 
         // Check if this belongs to Post's class className
-        public bool BelongsToCLass(string className)
+        public bool BelongsToClass(string className)
         {
 
             if (Regex.IsMatch(className, patternCheck))
