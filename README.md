@@ -2,6 +2,8 @@
 
 PostClassDeterminer is a Windows Forms application for analyzing Boolean functions and determining their place in Post's classification lattice. The program accepts a binary input string (containing only `0` and `1`) and checks whether it represents a valid Boolean function of size $2^n$, then computes the reduced function and identifies the narrowest Post class to which it belongs.
 
+![alt text](assets/Post's_lattice.png)
+
 ## What it does
 
 The application:
