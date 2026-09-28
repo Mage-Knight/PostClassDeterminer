@@ -21,6 +21,22 @@ The application:
 
 This project is intended for exploring Boolean function classification and theoretical algebraic properties in a simple desktop interface.
 
+## Usage examples
+
+* $f^{(5)}(x_1, \dots, x_5) = x_3$
+
+![alt text](assets/Ex1.png) <br/>
+* $f(x,y) = x \oplus y$
+
+![alt text](assets/Ex2.png) <br/>
+* $f(x,y) = x \rightarrow y$
+
+![alt text](assets/Ex3.png) <br/>
+* $f(x,y) = x \downarrow y$
+
+![alt text](assets/Ex4.png) <br/>
+
+
 ## Requirements
 
 - Windows operating system
